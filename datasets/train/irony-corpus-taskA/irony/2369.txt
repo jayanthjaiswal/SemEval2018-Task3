@@ -1,0 +1,1 @@
+Enabling the Windows Firewall is a perfectly reasonable thing to do to package in a software installer. #SCCMAdmininHealthcare

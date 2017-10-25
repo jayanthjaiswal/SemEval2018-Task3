@@ -1,0 +1,1 @@
+Most useful algorithm I've learned in class so far is finding a substring by using the fast fourier transform

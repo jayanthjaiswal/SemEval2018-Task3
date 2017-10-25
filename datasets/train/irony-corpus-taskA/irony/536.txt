@@ -1,0 +1,1 @@
+I've changed gazilion times the #java configuration NOT to check for updates. It's nice that every five minutes asks me for an update!

@@ -1,0 +1,1 @@
+I love the meaningful messages of automake.
