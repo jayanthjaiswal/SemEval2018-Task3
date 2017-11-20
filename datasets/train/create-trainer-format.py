@@ -10,7 +10,7 @@ for line in data[1:]:
     sent = words[2:]
     for i in range(len(sent)):
         sent[i] = re.sub(r'^https?:\/\/.*[\r\n]*', 'URL', sent[i])
-        sent[i] = re.sub(r'@[a-zA-Z0-9]+', 'USER', sent[i]);
+        sent[i] = re.sub(r'@[a-zA-Z0-9_]+', 'USER', sent[i]);
     if label == 1:
         f = open("irony-corpus-taskA/irony/" + str(linenumber) + ".txt", "w+")
     else:
