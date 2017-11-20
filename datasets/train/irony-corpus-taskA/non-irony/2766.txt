@@ -1,1 +1,1 @@
-@SR_Duncan @destroy_robots Chortle. Would he have liked Palmer?
+USER_Duncan USER_robots Chortle. Would he have liked Palmer?

@@ -1,1 +1,1 @@
-Sysdig Cloud - The Fascinating World of Linux System Calls < reminds me of my Solaris dtrace days in early 2000's http://t.co/e3YYx07tgQ
+Sysdig Cloud - The Fascinating World of Linux System Calls < reminds me of my Solaris dtrace days in early 2000's URL

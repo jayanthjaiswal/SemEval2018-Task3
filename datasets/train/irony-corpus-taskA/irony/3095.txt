@@ -1,1 +1,1 @@
-" "@emptynetters: Penguins cancel morning skate, which was an optional, due to icy road conditions."
+" "USER: Penguins cancel morning skate, which was an optional, due to icy road conditions."

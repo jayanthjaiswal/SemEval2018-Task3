@@ -1,1 +1,1 @@
-#HybridCloud needs hybrid monitoring... monitor Azure, plus apps and dbs, from SCOM https://t.co/uJRpzYnY8y
+#HybridCloud needs hybrid monitoring... monitor Azure, plus apps and dbs, from SCOM URL
