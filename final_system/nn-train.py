@@ -32,6 +32,7 @@ biases = {
     'out': tf.Variable(tf.random_normal([num_classes]))
 }
 
+
 # Create model
 def neural_net(x):
     # Hidden fully connected layer with 256 neurons

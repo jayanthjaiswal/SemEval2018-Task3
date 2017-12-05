@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 
+from __future__ import print_function
+import collections, itertools, random, nltk
+from nltk import BigramCollocationFinder, BigramAssocMeasures
+
+try:
+    from nltk.compat import iteritems
+except ImportError:
+    def iteritems(d):
+        return d.iteritems()
+
 '''
 example.py
 
@@ -21,8 +31,8 @@ import numpy as np
 import logging
 import codecs
 
-
 logging.basicConfig(level=logging.INFO)
+
 
 def parse_dataset(fp):
     '''
@@ -36,8 +46,8 @@ def parse_dataset(fp):
     corpus = []
     with open(fp, 'rt') as data_in:
         for line in data_in:
-            if not line.lower().startswith("tweet index"): # discard first line if it contains metadata
-                line = line.rstrip() # remove trailing whitespace
+            if not line.lower().startswith("tweet index"):  # discard first line if it contains metadata
+                line = line.rstrip()  # remove trailing whitespace
                 label = int(line.split("\t")[1])
                 tweet = line.split("\t")[2]
                 y.append(label)
@@ -57,8 +67,20 @@ def featurize(corpus):
     vectorizer = TfidfVectorizer(strip_accents="unicode", analyzer="word", tokenizer=tokenizer, stop_words="english")
     X = vectorizer.fit_transform(corpus)
     # print(vectorizer.get_feature_names()) # to manually check if the tokens are reasonable
-    return X
+    return X, vectorizer
 
+
+def most_informative_feature_for_binary_classification(vectorizer, classifier, n=10):
+    class_labels = classifier.classes_
+    feature_names = vectorizer.get_feature_names()
+    topn_class1 = sorted(zip(classifier.coef_[0], feature_names))[:n]
+    topn_class2 = sorted(zip(classifier.coef_[0], feature_names))[-n:]
+
+    for coef, feat in topn_class1:
+        print(class_labels[0], coef, feat)
+    print()
+    for coef, feat in reversed(topn_class2):
+        print(class_labels[1], coef, feat)
 
 
 if __name__ == "__main__":
@@ -66,32 +88,43 @@ if __name__ == "__main__":
 
     # Dataset: SemEval2018-T4-train-taskA.txt or SemEval2018-T4-train-taskB.txt
     DATASET_FP = "./SemEval2018-T4-train-taskA.txt"
-    TASK = "A" # Define, A or B
+    TASK = "A"  # Define, A or B
     FNAME = './predictions-task' + TASK + '.txt'
     PREDICTIONSFILE = open(FNAME, "w")
 
-    K_FOLDS = 10 # 10-fold crossvalidation
-    CLF = LinearSVC() # the default, non-parameter optimized linear-kernel SVM
+    K_FOLDS = 10  # 10-fold crossvalidation
+    CLF = LinearSVC()  # the default, non-parameter optimized linear-kernel SVM
 
     # Loading dataset and featurised simple Tfidf-BoW model
     corpus, y = parse_dataset(DATASET_FP)
-    X = featurize(corpus)
+    X, vectorizer = featurize(corpus)
 
     class_counts = np.asarray(np.unique(y, return_counts=True)).T.tolist()
-    print (class_counts)
-    
+    print(class_counts)
+
+    print(corpus)
+    tokenizer = TweetTokenizer(preserve_case=False, reduce_len=True, strip_handles=True).tokenize
+    tokens = tokenizer('\n'.join(corpus))
+    finder = BigramCollocationFinder.from_words(tokens)
+    bigram_measures = BigramAssocMeasures()
+    scored = finder.score_ngrams(bigram_measures.student_t)
+    sorted(bigram for bigram, score in scored)
+    map(lambda x: print(' '.join(x[0]), x[1]), scored[:10])
+
+    CLF.fit(X, y)
+
     # Returns an array of the same size as 'y' where each entry is a prediction obtained by cross validated
     predicted = cross_val_predict(CLF, X, y, cv=K_FOLDS)
-    
+
+    most_informative_feature_for_binary_classification(vectorizer, CLF, n=10)
+
     # Modify F1-score calculation depending on the task
     if TASK.lower() == 'a':
         score = metrics.f1_score(y, predicted, pos_label=1)
     elif TASK.lower() == 'b':
         score = metrics.f1_score(y, predicted, average="macro")
-    print ("F1-score Task", TASK, score)
+    print()
+    print("F1-score Task", TASK, score)
     for p in predicted:
         PREDICTIONSFILE.write("{}\n".format(p))
     PREDICTIONSFILE.close()
-    
-    
-    
