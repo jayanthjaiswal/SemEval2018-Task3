@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 
-'''
-example.py
-
-Benchmark system for the SemEval-2018 Task 3 on Irony detection in English tweets.
-The system makes use of token unigrams as features and outputs cross-validated F1-score.
-
-Date: 1/09/2017
-Copyright (c) Gilles Jacobs & Cynthia Van Hee, LT3. All rights reserved.
-'''
-
 from nltk.tokenize import TweetTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import cross_val_score, cross_val_predict
@@ -234,7 +224,3 @@ if __name__ == "__main__":
 
         print("Optimization Finished!")
 
-        # # Calculate accuracy for MNIST test images
-        # print("Testing Accuracy:", \
-        #     sess.run(accuracy, feed_dict={X: mnist.test.images,
-        #                                   Y: mnist.test.labels}))

@@ -22,4 +22,8 @@ Install with pip:
 ## Usage
 Run `python example.py` from terminal.
 
-**NOTE**: the path to the input file and the task (A or B) has to be hard-coded in the script.
+The script does 10-fold cross-validation with the classifier and reports the final accuracy. 
+It also, does collocation analysis in the start. 
+In the end, it also reports the top 10 words/features, which were important for classifier (most_informative_feature_for_binary_classification).
+
+**NOTE**: Multiple classifiers from scikit in this script just changing the line 96 of example.py to put the classifier
